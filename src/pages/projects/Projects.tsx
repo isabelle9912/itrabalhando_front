@@ -23,6 +23,11 @@ const Projects = () => {
         <Container className="mt-4">
             <h1 className="mb-4">Projetos Publicados</h1>
 
+            {/* Botão para criar novo projeto */}
+            <Button as={Link} to="/create-project" variant="success" className="mb-4">
+                Publicar Novo Projeto
+            </Button>
+
             {/* Barra de Busca */}
             <Form.Group className="mb-4">
                 <Form.Control
