@@ -68,7 +68,7 @@ const ProjectDetails = () => {
                                         <Card.Body>
                                             <Card.Text>
 
-                                                <Button as={Link} to={`/project/${proposal.freelancerId}`} variant="outline-dark">
+                                                <Button as={Link} to={`/profile/${proposal.freelancerId}`} variant="outline-dark">
                                                     Ver Perfil do Freelancer
                                                 </Button>
                                             </Card.Text>
