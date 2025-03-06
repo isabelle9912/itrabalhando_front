@@ -65,7 +65,9 @@ const Home = () => {
                 <Col>
                     <h2>Precisa de um serviço?</h2>
                     <p>Publique seu projeto e receba propostas de freelancers qualificados.</p>
-                    <Button as={Link} to="/projects" variant="success" size="lg">
+
+                    {/* Botão para criar novo projeto */}
+                    <Button as={Link} to="/create-project" variant="success" className="mb-4">
                         Publicar Projeto
                     </Button>
                 </Col>
