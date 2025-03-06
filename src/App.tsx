@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Freelancers from './pages/Freelancers';
-import Projects from './pages/Projects';
-import Profile from './pages/Profile';
+import Home from './pages/home/Home.tsx';
+import Freelancers from './pages/freelancers/Freelancers.tsx';
+import Projects from './pages/projects/Projects.tsx';
+import Profile from './pages/profile/Profile.tsx';
 
 function App() {
     return (
