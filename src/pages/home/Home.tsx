@@ -1,7 +1,7 @@
 import { Card, Container, Row, Col, Button } from 'react-bootstrap';
 import { useUserContext } from '../../context/UserContext';
 import { FreelancerFormData } from '../../schemas/userSchema';
-import { Link } from 'react-router-dom';
+import ProfileImgName from "../../components/profileImgName/ProfileImgName.tsx";
 
 const Home = () => {
     const { users } = useUserContext();
@@ -20,7 +20,7 @@ const Home = () => {
                     <p className="lead">
                         Conectamos empresas e clientes locais aos melhores profissionais autônomos da região.
                     </p>
-                    <Button as={Link} to="/freelancers" variant="primary" size="lg">
+                    <Button href="/freelancers" variant="primary" size="lg">
                         Encontre um Freelancer
                     </Button>
                 </Col>
@@ -38,19 +38,11 @@ const Home = () => {
                                 <Col key={freelancer.id} md={4} className="mb-4">
                                     <Card>
                                         <Card.Body>
-                                            <Card.Title>{freelancerData.name}</Card.Title>
+                                            <ProfileImgName id={freelancer.id} name={freelancer.data.name} image={freelancer.image}/>
                                             <Card.Text>{freelancerData.bio}</Card.Text>
                                             <Card.Text>
                                                 <strong>Habilidades:</strong> {freelancerData.skills.join(', ')}
                                             </Card.Text>
-                                            <Button
-                                                as={Link}
-                                                to={`/profile/${freelancer.id}`}
-                                                variant="outline-primary"
-                                                size="sm"
-                                            >
-                                                Ver Perfil
-                                            </Button>
                                         </Card.Body>
                                     </Card>
                                 </Col>
@@ -67,7 +59,7 @@ const Home = () => {
                     <p>Publique seu projeto e receba propostas de freelancers qualificados.</p>
 
                     {/* Botão para criar novo projeto */}
-                    <Button as={Link} to="/create-project" variant="success" className="mb-4">
+                    <Button href="/create-project" variant="success" className="mb-4">
                         Publicar Projeto
                     </Button>
                 </Col>

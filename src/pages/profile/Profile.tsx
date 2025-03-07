@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useUserContext } from '../../context/UserContext';
 import { Card, Container, Button } from 'react-bootstrap';
 import { isFreelancer, isClient } from '../../utils/typeGuards';
+import ProfileImgName from "../../components/profileImgName/ProfileImgName.tsx";
 
 const Profile = () => {
     const { id } = useParams<{ id: string }>();
@@ -18,7 +19,7 @@ const Profile = () => {
         <Container className="mt-4">
             <Card>
                 <Card.Body>
-                    <Card.Title>{user.data.name}</Card.Title>
+                    <ProfileImgName id={user.id} name={user.data.name} image={user?.data.image} />
                     {isFreelancer(user.data) && (
                         <>
                             <Card.Text>{user.data.bio}</Card.Text>

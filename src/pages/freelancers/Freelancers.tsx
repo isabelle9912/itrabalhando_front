@@ -2,6 +2,7 @@ import { useUserContext } from '../../context/UserContext';
 import {Card, Container, Row, Col, Form} from 'react-bootstrap';
 import { isFreelancer } from '../../utils/typeGuards';
 import {useState} from "react";
+import ProfileImgName from "../../components/profileImgName/ProfileImgName.tsx";
 
 const Freelancers = () => {
     const { users } = useUserContext();
@@ -50,21 +51,8 @@ const Freelancers = () => {
                                 <Col key={freelancer.id} md={4} className="mb-4">
                                     <Card>
                                         <Card.Body>
-                                            {freelancer.data.image &&(
-                                                <Row className="align-items-center mb-2">
-                                                    <Col xs="auto">
-                                                        <img
-                                                            src={freelancer.data.image}
-                                                            alt={freelancer.data.name}
-                                                            className="rounded-circle"
-                                                            width="60"
-                                                            height="60"
-                                                        />
-                                                    </Col>
-                                                    <Col>
-                                                        <Card.Title>{freelancer.data.name}</Card.Title>
-                                                    </Col>
-                                                </Row>
+                                            {freelancer.data.image && (
+                                                <ProfileImgName id={freelancer.id} name={freelancer.data.name} image={freelancer.image}/>
                                             )}
                                             <Card.Text>{freelancer.data.bio}</Card.Text>
                                             <Card.Text>
