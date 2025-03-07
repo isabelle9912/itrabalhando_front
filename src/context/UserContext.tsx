@@ -6,6 +6,7 @@ type User = {
     id: string;
     type: 'freelancer' | 'client';
     data: FreelancerFormData | ClientFormData;
+    image: string | undefined;
 };
 
 type UserContextType = {
@@ -23,12 +24,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             id: `f-${index + 1}`,
             type: 'freelancer',
             data: freelancer,
+            image: freelancer.image,
         }));
 
         const clients: User[] = mockClients.map((client, index) => ({
             id: `c-${index + 1}`,
             type: 'client',
             data: client,
+            image: client.image,
         }));
 
         return [...freelancers, ...clients];
@@ -39,6 +42,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             id: `f-${users.length + 1}`,
             type: 'freelancer',
             data: freelancer,
+            image: freelancer.image,
         };
         setUsers((prev) => [...prev, newUser]);
     };
@@ -48,6 +52,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             id: `c-${users.length + 1}`,
             type: 'client',
             data: client,
+            image: client.image,
         };
         setUsers((prev) => [...prev, newUser]);
     };
