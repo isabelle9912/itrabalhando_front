@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useProjectContext } from '../../context/ProjectContext';
-import {Card, Container, Button, ListGroup, Tabs, Tab} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import {Card, Container, Button, ListGroup, Tabs, Tab, Col, Row} from 'react-bootstrap';
 import {useUserContext} from "../../context/UserContext.tsx";
 import {isClient} from "../../utils/typeGuards.ts";
 import ProposalForm from "../../components/proposalForm/ProposalForm.tsx";
@@ -43,15 +42,28 @@ const ProjectDetails = () => {
                             {project.skillsRequired.join(', ')}
                         </ListGroup.Item>
                         {client && isClient(client.data) && (
-                            <ListGroup.Item>
-                                <strong>Publicado por:</strong> {client.data.name} <br />
-                                <strong>E-mail:</strong> {client.data.email} <br />
-                                {client.data.company && (
-                                    <>
-                                        <strong>Empresa:</strong> {client.data.company}
-                                    </>
+                            <Row className="align-items-center mb-2">
+                                {client.data.image &&(
+                                    <Col xs="auto">
+                                        <img
+                                            src={client.data.image}
+                                            alt={client.data.name}
+                                            className="rounded-circle"
+                                            width="60"
+                                            height="60"
+                                        />
+                                    </Col>
                                 )}
-                            </ListGroup.Item>
+                                <Col>
+                                    <Card.Title>{client.data.name}</Card.Title>
+                                    <strong>E-mail:</strong> {client.data.email} <br />
+                                    {client.data.company && (
+                                        <>
+                                            <strong>Empresa:</strong> {client.data.company}
+                                        </>
+                                    )}
+                                </Col>
+                            </Row>
                         )}
                     </ListGroup>
 
@@ -68,7 +80,7 @@ const ProjectDetails = () => {
                                         <Card.Body>
                                             <Card.Text>
 
-                                                <Button as={Link} to={`/profile/${proposal.freelancerId}`} variant="outline-dark">
+                                                <Button href={`/profile/${proposal.freelancerId}`} variant="outline-dark">
                                                     Ver Perfil do Freelancer
                                                 </Button>
                                             </Card.Text>
@@ -96,7 +108,7 @@ const ProjectDetails = () => {
                         </Tab>
                     </Tabs>
 
-                    <Button as={Link} to="/projects" variant="primary" className="mt-3">
+                    <Button  href={"/projects"} variant="primary" className="mt-3">
                         Voltar para Projetos
                     </Button>
                 </Card.Body>
