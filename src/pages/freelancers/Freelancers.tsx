@@ -50,7 +50,22 @@ const Freelancers = () => {
                                 <Col key={freelancer.id} md={4} className="mb-4">
                                     <Card>
                                         <Card.Body>
-                                            <Card.Title>{freelancer.data.name}</Card.Title>
+                                            {freelancer.data.image &&(
+                                                <Row className="align-items-center mb-2">
+                                                    <Col xs="auto">
+                                                        <img
+                                                            src={freelancer.data.image}
+                                                            alt={freelancer.data.name}
+                                                            className="rounded-circle"
+                                                            width="60"
+                                                            height="60"
+                                                        />
+                                                    </Col>
+                                                    <Col>
+                                                        <Card.Title>{freelancer.data.name}</Card.Title>
+                                                    </Col>
+                                                </Row>
+                                            )}
                                             <Card.Text>{freelancer.data.bio}</Card.Text>
                                             <Card.Text>
                                                 <strong>Habilidades:</strong> {freelancer.data.skills.join(', ')}
