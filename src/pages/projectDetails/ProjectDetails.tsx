@@ -43,7 +43,7 @@ const ProjectDetails = () => {
                         </ListGroup.Item>
                         {client && isClient(client.data) && (
                             <Row className="align-items-center mb-2">
-                                {client.data.image &&(
+                                {client.data.image && (
                                     <Col xs="auto">
                                         <img
                                             src={client.data.image}
@@ -79,7 +79,6 @@ const ProjectDetails = () => {
                                     <Card key={proposal.id} className="mb-3">
                                         <Card.Body>
                                             <Card.Text>
-
                                                 <Button href={`/profile/${proposal.freelancerId}`} variant="outline-dark">
                                                     Ver Perfil do Freelancer
                                                 </Button>
