@@ -1,6 +1,5 @@
 import { useProjectContext } from '../../context/ProjectContext';
 import {Card, Container, Row, Col, Button, Form} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import {useState} from "react";
 
 const Projects = () => {
@@ -24,7 +23,7 @@ const Projects = () => {
             <h1 className="mb-4">Projetos Publicados</h1>
 
             {/* Botão para criar novo projeto */}
-            <Button as={Link} to="/create-project" variant="success" className="mb-4">
+            <Button href="/create-project" variant="success" className="mb-4">
                 Publicar Novo Projeto
             </Button>
 
@@ -59,7 +58,7 @@ const Projects = () => {
                                         <strong>Habilidades Requeridas:</strong>{' '}
                                         {project.skillsRequired.join(', ')}
                                     </Card.Text>
-                                    <Button as={Link} to={`/project/${project.id}`} variant="primary">
+                                    <Button href={`/project/${project.id}`} variant="primary">
                                         Ver Detalhes
                                     </Button>
                                 </Card.Body>
