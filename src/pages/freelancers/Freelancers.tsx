@@ -1,8 +1,8 @@
 import { useUserContext } from '../../context/UserContext';
-import {Card, Container, Row, Col, Form} from 'react-bootstrap';
+import { Container, Row, Col, Form} from 'react-bootstrap';
 import { isFreelancer } from '../../utils/typeGuards';
 import {useState} from "react";
-import ProfileImgName from "../../components/profileImgName/ProfileImgName.tsx";
+import CardFrelancer from "../../components/cardFreelancer/CardFreelancer.tsx";
 
 const Freelancers = () => {
     const { users } = useUserContext();
@@ -49,20 +49,7 @@ const Freelancers = () => {
                         if (isFreelancer(freelancer.data)) {
                             return (
                                 <Col key={freelancer.id} md={4} className="mb-4">
-                                    <Card>
-                                        <Card.Body>
-                                            {freelancer.data.image && (
-                                                <ProfileImgName id={freelancer.id} name={freelancer.data.name} image={freelancer.image}/>
-                                            )}
-                                            <Card.Text>{freelancer.data.bio}</Card.Text>
-                                            <Card.Text>
-                                                <strong>Habilidades:</strong> {freelancer.data.skills.join(', ')}
-                                            </Card.Text>
-                                            <Card.Text>
-                                                <strong>E-mail:</strong> {freelancer.data.email}
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
+                                    <CardFrelancer id={freelancer.id} name={freelancer.data.name} bio={freelancer.data.bio} email={freelancer.data.email} image={freelancer.image} skills={freelancer.data.skills}/>
                                 </Col>
                             );
                         }
