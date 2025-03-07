@@ -1,7 +1,7 @@
-import { Card, Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useUserContext } from '../../context/UserContext';
-import { FreelancerFormData } from '../../schemas/userSchema';
-import ProfileImgName from "../../components/profileImgName/ProfileImgName.tsx";
+import CardFrelancer from "../../components/cardFreelancer/CardFreelancer.tsx";
+import {isFreelancer} from "../../utils/typeGuards.ts";
 
 const Home = () => {
     const { users } = useUserContext();
@@ -32,21 +32,14 @@ const Home = () => {
                     <h2 className="mb-4">Freelancers em Destaque</h2>
                     <Row>
                         {freelancers.map((freelancer) => {
-                            const freelancerData = freelancer.data as FreelancerFormData;
-
-                            return (
-                                <Col key={freelancer.id} md={4} className="mb-4">
-                                    <Card>
-                                        <Card.Body>
-                                            <ProfileImgName id={freelancer.id} name={freelancer.data.name} image={freelancer.image}/>
-                                            <Card.Text>{freelancerData.bio}</Card.Text>
-                                            <Card.Text>
-                                                <strong>Habilidades:</strong> {freelancerData.skills.join(', ')}
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            );
+                            if (isFreelancer(freelancer.data)) {
+                                return (
+                                    <Col key={freelancer.id} md={4} className="mb-4">
+                                        <CardFrelancer id={freelancer.id} name={freelancer.data.name} bio={freelancer.data.bio} email={freelancer.data.email} image={freelancer.image} skills={freelancer.data.skills}/>
+                                    </Col>
+                                );
+                            }
+                            return null;
                         })}
                     </Row>
                 </Col>
