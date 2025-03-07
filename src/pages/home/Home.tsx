@@ -16,7 +16,7 @@ const Home = () => {
             {/* Seção de Boas-Vindas */}
             <Row className="py-4 mb-5 text-center">
                 <Col>
-                    <h1>Bem-vindo à Plataforma de Freelancers de Itabaiana</h1>
+                    <h1>Bem-vindo à Plataforma Itrabalhando</h1>
                     <p className="lead">
                         Conectamos empresas e clientes locais aos melhores profissionais autônomos da região.
                     </p>
