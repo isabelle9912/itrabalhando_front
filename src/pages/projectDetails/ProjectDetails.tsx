@@ -19,7 +19,7 @@ const ProjectDetails = () => {
     }
 
     // Encontra o cliente que publicou o projeto
-    const client = users.find((user) => user.id === project.clientId);
+    const client = users.find((user) => user.id === project.client_id);
 
     // Filtra as propostas relacionadas ao projeto
     const projectProposals = proposals.filter((proposal) => proposal.projectId === id);

@@ -7,7 +7,7 @@ export const projectSchema = z.object({
     budget: z.number().min(1, 'O orçamento deve ser maior que 0'),
     deadline: z.string().refine((val) => !isNaN(Date.parse(val))),
     skillsRequired: z.array(z.string()).nonempty('Selecione pelo menos uma habilidade'),
-    clientId: z.string(), // ID do cliente que publicou o projeto
+    client_id: z.string(), // ID do cliente que publicou o projeto
 });
 
 // Tipo inferido do esquema
