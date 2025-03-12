@@ -22,7 +22,7 @@ const ProjectDetails = () => {
     const client = users.find((user) => user.id === project.client_id);
 
     // Filtra as propostas relacionadas ao projeto
-    const projectProposals = proposals.filter((proposal) => proposal.projectId === id);
+    const projectProposals = proposals.filter((proposal) => proposal.project_id === Number(id));
 
     return (
         <Container className="mt-4">
@@ -79,7 +79,7 @@ const ProjectDetails = () => {
                                     <Card key={proposal.id} className="mb-3">
                                         <Card.Body>
                                             <Card.Text>
-                                                <Button href={`/profile/${proposal.freelancerId}`} variant="outline-dark">
+                                                <Button href={`/profile/${proposal.freelancer_id}`} variant="outline-dark">
                                                     Ver Perfil do Freelancer
                                                 </Button>
                                             </Card.Text>
@@ -102,7 +102,7 @@ const ProjectDetails = () => {
                         <Tab eventKey="send-proposal" title="Enviar Proposta">
                             <h4 className="mt-3">Enviar Proposta</h4>
                             {id &&
-                              <ProposalForm projectId={id} freelancerId="f-1" />
+                              <ProposalForm project_id={Number(id)} freelancer_id={1} />
                             }
                         </Tab>
                     </Tabs>

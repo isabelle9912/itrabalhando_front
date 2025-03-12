@@ -5,12 +5,12 @@ import { useProjectContext } from '../../context/ProjectContext';
 import { Button, Form } from 'react-bootstrap';
 
 type ProposalFormProps = {
-    projectId: string;
-    freelancerId: string;
+    project_id: number;
+    freelancer_id: number;
     onSubmitSuccess?: () => void;
 };
 
-const ProposalForm = ({ projectId, freelancerId, onSubmitSuccess }: ProposalFormProps) => {
+const ProposalForm = ({ project_id, freelancer_id, onSubmitSuccess }: ProposalFormProps) => {
     const { addProposal } = useProjectContext();
     const {
         register,
@@ -19,8 +19,8 @@ const ProposalForm = ({ projectId, freelancerId, onSubmitSuccess }: ProposalForm
     } = useForm<ProposalFormData>({
         resolver: zodResolver(proposalSchema),
         defaultValues: {
-            projectId,
-            freelancerId,
+            project_id,
+            freelancer_id,
         },
     });
 
