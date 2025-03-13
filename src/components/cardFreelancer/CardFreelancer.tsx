@@ -2,12 +2,12 @@ import {Card} from "react-bootstrap";
 import ProfileImgName from "../profileImgName/ProfileImgName.tsx";
 
 interface Props {
-    id: string;
+    id: number;
     name: string;
     bio: string;
     skills: string[];
     email: string;
-    image: string | undefined;
+    image: string | null | undefined;
 }
 
 const CardFrelancer = ({id, name, bio, skills, email, image}: Props) => {
