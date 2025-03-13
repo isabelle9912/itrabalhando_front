@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProjectFormData, projectSchema } from '../../schemas/projectSchema';
+import { projectCreateSchema } from '../../schemas/project.schema.ts';
 import { useProjectContext } from '../../context/ProjectContext';
 import { Button, Form } from 'react-bootstrap';
+import {iProjectCreate} from "../../interfaces/project.interface.ts";
+import {useUserContext} from "../../context/UserContext.tsx";
 
 type ProjectFormProps = {
     onSubmitSuccess?: () => void;
@@ -10,24 +12,27 @@ type ProjectFormProps = {
 
 const ProjectForm = ({ onSubmitSuccess }: ProjectFormProps) => {
     const { addProject } = useProjectContext();
+    const { user } = useUserContext();
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<ProjectFormData>({
-        resolver: zodResolver(projectSchema),
+    } = useForm<iProjectCreate>({
+        resolver: zodResolver(projectCreateSchema),
     });
 
-    const onSubmit = (data: ProjectFormData) => {
-        // Converte a string de habilidades em um array
-        const projectData = {
-            ...data,
-            skillsRequired: data.skillsRequired.split(',').map((skill) => skill.trim()),
-        };
-        addProject(projectData);
-        alert('Projeto publicado com sucesso!');
-        onSubmitSuccess?.();
+    const onSubmit = (data: iProjectCreate) => {
+        if (user && localStorage.getItem("@ROLE") == "client") {
+            const projectData = {
+                ...data,
+                client_id: user.id, // Adiciona o client_id
+            };
+            addProject(projectData);
+            alert('Projeto publicado com sucesso!');
+            onSubmitSuccess?.();
+        }
     };
+
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
