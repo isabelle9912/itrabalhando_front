@@ -4,36 +4,44 @@ import {iProposal, iProposalCreate} from "../interfaces/proposal.interface.ts";
 import {api} from "../api/api.ts";
 
 type ProjectContextType = {
-    projects: Project[];
-    proposals: Proposal[];
-    addProject: (project: ProjectFormData) => void;
-    addProposal: (proposal: ProposalFormData) => void;
+    addProject: (project: iProjectCreate) => void;
+    addProposal: (proposal: iProposalCreate) => void;
+    retrieveProject: (id: number) => Promise<iProject>;
+    retrieveProjects: () => Promise<iProject[]>;
+    retrieveProposals: (project_id: number) => Promise<iProposal[] | []>;
 };
 
 const ProjectContext = createContext<ProjectContextType | null>(null);
 
 export const ProjectProvider = ({ children }: { children: React.ReactNode }) => {
-    const [projects, setProjects] = useState<Project[]>(mockProjects);
-    const [proposals, setProposals] = useState<Proposal[]>([]);
 
-    const addProject = (project: ProjectFormData) => {
-        const newProject: Project = {
-            ...project,
-            id: String(projects.length + 1), // Gera um ID único
-        };
-        setProjects((prev) => [...prev, newProject]);
+
+    const addProject = async (project: iProjectCreate) => {
+        await api.post("/project", project);
+
     };
 
-    const addProposal = (proposal: ProposalFormData) => {
-        const newProposal: Proposal = {
-            ...proposal,
-            id: String(proposals.length + 1), // Gera um ID único
-        };
-        setProposals((prev) => [...prev, newProposal]);
+    const addProposal = async (proposal: iProposalCreate) => {
+        await api.post("/proposal", proposal);
     };
+
+    const retrieveProject = async (id: number): Promise<iProject> => {
+        const response = await api.get(`/project/${id}`);
+        return response.data;
+    }
+
+    const retrieveProjects = async (): Promise<iProject[]> => {
+        const response = await api.get(`/project/`);
+        return response.data;
+    }
+
+    const retrieveProposals = async (project_id: number): Promise<iProposal[] | []> => {
+        const response = await api.get(`/proposal/all/${project_id}`);
+        return response.data;
+    }
 
     return (
-        <ProjectContext.Provider value={{ projects,proposals, addProject, addProposal }}>
+        <ProjectContext.Provider value={{ addProject, addProposal, retrieveProject, retrieveProjects, retrieveProposals }}>
             {children}
         </ProjectContext.Provider>
     );
