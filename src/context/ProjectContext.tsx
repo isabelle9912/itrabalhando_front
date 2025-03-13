@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from 'react';
-import { Project, ProjectFormData } from '../schemas/projectSchema';
-import { Proposal, ProposalFormData } from '../schemas/proposalSchema';
-import { mockProjects } from '../data/mockProjects';
+import { createContext, useContext } from 'react';
+import {iProject, iProjectCreate} from "../interfaces/project.interface.ts";
+import {iProposal, iProposalCreate} from "../interfaces/proposal.interface.ts";
+import {api} from "../api/api.ts";
 
 type ProjectContextType = {
     projects: Project[];
