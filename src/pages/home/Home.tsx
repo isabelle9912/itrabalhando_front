@@ -1,15 +1,25 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useUserContext } from '../../context/UserContext';
 import CardFrelancer from "../../components/cardFreelancer/CardFreelancer.tsx";
-import {isFreelancer} from "../../utils/typeGuards.ts";
+import {useEffect, useState} from "react";
+import {iFreelancer} from "../../interfaces/freelancer.interface.ts";
 
 const Home = () => {
-    const { users } = useUserContext();
+    const { retrieveFreelancers } = useUserContext();
+    const [freelancers, setFreelancers] = useState<iFreelancer[]>([]);
+
+    useEffect(() => {
+        const getFreelancers = async () => {
+            const freelancers = await retrieveFreelancers();
+            setFreelancers(freelancers);
+        };
+
+        getFreelancers();
+    }, []);
 
     // Filtra apenas freelancers
-    const freelancers = users
-        .filter((user) => user.type === 'freelancer')
-        .slice(0, 3); // Exibe apenas os 3 primeiros freelancers
+    const freelancersFilter = freelancers
+        .slice(0, 15); // Exibe apenas os 15 primeiros freelancers
 
     return (
         <Container className="mt-4">
@@ -31,15 +41,12 @@ const Home = () => {
                 <Col>
                     <h2 className="mb-4">Freelancers em Destaque</h2>
                     <Row>
-                        {freelancers.map((freelancer) => {
-                            if (isFreelancer(freelancer.data)) {
-                                return (
-                                    <Col key={freelancer.id} md={4} className="mb-4">
-                                        <CardFrelancer id={freelancer.id} name={freelancer.data.name} bio={freelancer.data.bio} email={freelancer.data.email} image={freelancer.image} skills={freelancer.data.skills}/>
-                                    </Col>
-                                );
-                            }
-                            return null;
+                        {freelancersFilter.map((freelancer) => {
+                            return (
+                                <Col key={freelancer.id} md={4} className="mb-4">
+                                    <CardFrelancer id={freelancer.id} name={freelancer.name} bio={freelancer.bio} email={freelancer.email} image={freelancer.image} skills={freelancer.skills}/>
+                                </Col>
+                            );
                         })}
                     </Row>
                 </Col>
@@ -48,13 +55,28 @@ const Home = () => {
             {/* Chamada para Ação */}
             <Row className="mb-5 text-center">
                 <Col>
-                    <h2>Precisa de um serviço?</h2>
-                    <p>Publique seu projeto e receba propostas de freelancers qualificados.</p>
+                    {localStorage.getItem("@ROLE") == "client" && (
+                        <>
+                            <h2>Precisa de um serviço?</h2>
+                            <p>Publique seu projeto e receba propostas de freelancers qualificados.</p>
 
-                    {/* Botão para criar novo projeto */}
-                    <Button href="/create-project" variant="success" className="mb-4">
-                        Publicar Projeto
-                    </Button>
+                            {/* Botão para criar novo projeto */}
+                                <Button href="/create-project" variant="success" className="mb-4">
+                                    Publicar Projeto
+                                </Button>
+                        </>
+                    )}
+                    {localStorage.getItem("@ROLE") == "freelancer" && (
+                        <>
+                            <h2>Procurando um serviço?</h2>
+                            <p>Veja projetos e faça propostas para cliente.</p>
+
+                            {/* Botão para ver projetos */}
+                            <Button href="/projects" variant="success" className="mb-4">
+                                Ver Projetos
+                            </Button>
+                        </>
+                    )}
                 </Col>
             </Row>
         </Container>
