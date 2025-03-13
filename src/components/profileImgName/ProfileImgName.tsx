@@ -2,9 +2,9 @@ import {Card, Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 interface Props {
-    id: string;
+    id: number;
     name: string;
-    image: string | undefined;
+    image: string | undefined | null;
 }
 
 const ProfileImgName = ({id, name, image}: Props) => {
