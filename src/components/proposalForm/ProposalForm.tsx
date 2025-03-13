@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProposalFormData, proposalSchema } from '../../schemas/proposalSchema';
+import { proposalCreateSchema } from '../../schemas/proposal.schema.ts';
 import { useProjectContext } from '../../context/ProjectContext';
 import { Button, Form } from 'react-bootstrap';
+import {iProposalCreate} from "../../interfaces/proposal.interface.ts";
 
 type ProposalFormProps = {
     project_id: number;
@@ -16,15 +17,15 @@ const ProposalForm = ({ project_id, freelancer_id, onSubmitSuccess }: ProposalFo
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<ProposalFormData>({
-        resolver: zodResolver(proposalSchema),
+    } = useForm<iProposalCreate>({
+        resolver: zodResolver(proposalCreateSchema),
         defaultValues: {
             project_id,
             freelancer_id,
         },
     });
 
-    const onSubmit = (data: ProposalFormData) => {
+    const onSubmit = (data: iProposalCreate) => {
         addProposal(data);
         alert('Proposta enviada com sucesso!');
         onSubmitSuccess?.();
