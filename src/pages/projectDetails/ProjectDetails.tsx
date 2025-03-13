@@ -4,25 +4,50 @@ import {Card, Container, Button, ListGroup, Tabs, Tab, Col, Row} from 'react-boo
 import {useUserContext} from "../../context/UserContext.tsx";
 import {isClient} from "../../utils/typeGuards.ts";
 import ProposalForm from "../../components/proposalForm/ProposalForm.tsx";
-
+import {useEffect, useState} from "react";
+import {iProject} from "../../interfaces/project.interface.ts";
+import {iClient} from "../../interfaces/client.interface.ts";
+import {iProposal} from "../../interfaces/proposal.interface.ts";
 
 const ProjectDetails = () => {
     const { id } = useParams<{ id: string }>();
-    const { projects, proposals } = useProjectContext();
-    const { users } = useUserContext();
+    const { retrieveProject, retrieveProposals } = useProjectContext();
+    const { retriveClient } = useUserContext();
+    const [project, setProject] = useState<iProject | null>(null);
+    const [client, setClient] = useState<iClient | null>(null);
+    const [proposals, setProposals] = useState<iProposal[] | []>([]);
 
-    // Encontra o projeto pelo ID
-    const project = projects.find((project) => project.id === id);
+    useEffect(() => {
+        const fetchProjectData = async () => {
+            if (!id) return;
+
+            try {
+                // Busca o projeto
+                const projectData = await retrieveProject(Number(id));
+                setProject(projectData);
+
+                // Se houver um cliente associado, busca os dados do cliente
+                if (projectData?.client_id) {
+                    const clientData = await retriveClient(projectData.client_id);
+                    setClient(clientData);
+                }
+
+                // Busca as propostas associadas ao projeto
+                if (projectData?.id) {
+                    const proposalsData = await retrieveProposals(projectData.id);
+                    setProposals(proposalsData);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar dados do projeto:", error);
+            }
+        };
+
+        fetchProjectData();
+    }, [id, retrieveProject, retriveClient, retrieveProposals]);
 
     if (!project) {
         return <Container className="mt-4">Projeto não encontrado.</Container>;
     }
-
-    // Encontra o cliente que publicou o projeto
-    const client = users.find((user) => user.id === project.client_id);
-
-    // Filtra as propostas relacionadas ao projeto
-    const projectProposals = proposals.filter((proposal) => proposal.project_id === Number(id));
 
     return (
         <Container className="mt-4">
@@ -41,13 +66,13 @@ const ProjectDetails = () => {
                             <strong>Habilidades Requeridas:</strong>{' '}
                             {project.skillsRequired.join(', ')}
                         </ListGroup.Item>
-                        {client && isClient(client.data) && (
+                        {client && isClient(client) && (
                             <Row className="align-items-center mb-2">
-                                {client.data.image && (
+                                {client.image && (
                                     <Col xs="auto">
                                         <img
-                                            src={client.data.image}
-                                            alt={client.data.name}
+                                            src={client.image}
+                                            alt={client.name}
                                             className="rounded-circle"
                                             width="60"
                                             height="60"
@@ -55,11 +80,11 @@ const ProjectDetails = () => {
                                     </Col>
                                 )}
                                 <Col>
-                                    <Card.Title>{client.data.name}</Card.Title>
-                                    <strong>E-mail:</strong> {client.data.email} <br />
-                                    {client.data.company && (
+                                    <Card.Title>{client.name}</Card.Title>
+                                    <strong>E-mail:</strong> {client.email} <br />
+                                    {client.company && (
                                         <>
-                                            <strong>Empresa:</strong> {client.data.company}
+                                            <strong>Empresa:</strong> {client.company}
                                         </>
                                     )}
                                 </Col>
@@ -74,8 +99,8 @@ const ProjectDetails = () => {
                         </Tab>
                         <Tab eventKey="proposals" title="Propostas">
                             <h4 className="mt-3">Propostas Recebidas</h4>
-                            {projectProposals.length > 0 ? (
-                                projectProposals.map((proposal) => (
+                            {proposals.length > 0 ? (
+                                proposals.map((proposal) => (
                                     <Card key={proposal.id} className="mb-3">
                                         <Card.Body>
                                             <Card.Text>
