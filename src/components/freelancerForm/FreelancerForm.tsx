@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { freelancerSchema, FreelancerFormData } from '../../schemas/userSchema';
+import { freelancerCreateSchema} from '../../schemas/freelancer.schema.ts';
 import { useUserContext } from '../../context/UserContext';
 import { Button, Form } from 'react-bootstrap';
+import {iFreelancerCreate} from "../../interfaces/freelancer.interface.ts";
 
 const FreelancerForm = () => {
     const { addFreelancer } = useUserContext();
@@ -10,11 +11,11 @@ const FreelancerForm = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FreelancerFormData>({
-        resolver: zodResolver(freelancerSchema),
+    } = useForm<iFreelancerCreate>({
+        resolver: zodResolver(freelancerCreateSchema),
     });
 
-    const onSubmit = (data: FreelancerFormData) => {
+    const onSubmit = (data: iFreelancerCreate) => {
         addFreelancer(data);
         alert('Freelancer cadastrado com sucesso!');
     };
@@ -31,6 +32,13 @@ const FreelancerForm = () => {
                 <Form.Label>E-mail</Form.Label>
                 <Form.Control type="email" {...register('email')} />
                 {errors.email && <span className="text-danger">{errors.email.message}</span>}
+            </Form.Group>
+
+
+            <Form.Group className="mb-3">
+                <Form.Label>Senha</Form.Label>
+                <Form.Control type="password" {...register('password')} />
+                {errors.password && <span className="text-danger">{errors.password.message}</span>}
             </Form.Group>
 
             <Form.Group className="mb-3">
