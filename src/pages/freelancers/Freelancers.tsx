@@ -1,28 +1,37 @@
 import { useUserContext } from '../../context/UserContext';
 import { Container, Row, Col, Form} from 'react-bootstrap';
-import { isFreelancer } from '../../utils/typeGuards';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CardFrelancer from "../../components/cardFreelancer/CardFreelancer.tsx";
+import {iFreelancer} from "../../interfaces/freelancer.interface.ts";
 
 const Freelancers = () => {
-    const { users } = useUserContext();
+    const { retrieveFreelancers } = useUserContext();
+    const [freelancers, setFreelancers] = useState<iFreelancer[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Filtra freelancers com base no termo de busca
-    const filteredFreelancers = users.filter((user) => {
-        if (user.type === 'freelancer' && isFreelancer(user.data)) {
-            const { name, skills, bio } = user.data;
-            const searchTerms = searchTerm.toLowerCase().split(',').map((term) => term.trim());
+    useEffect(() => {
+        const getFreelancers = async () => {
+            const freelancers = await retrieveFreelancers();
+            setFreelancers(freelancers);
+        };
 
-            return searchTerms.some((term) => {
-                return (
-                    name.toLowerCase().includes(term) ||
-                    skills.join(', ').toLowerCase().includes(term) ||
-                    bio.toLowerCase().includes(term)
-                );
-            });
-        }
-        return false;
+        getFreelancers();
+    }, []);
+
+
+    // Filtra freelancers com base no termo de busca
+    const filteredFreelancers = freelancers.filter((freelancer) => {
+        const { name, skills, bio } = freelancer;
+        const searchTerms = searchTerm.toLowerCase().split(',').map((term) => term.trim());
+
+        return searchTerms.some((term) => {
+            return (
+                name.toLowerCase().includes(term) ||
+                skills.join(', ').toLowerCase().includes(term) ||
+                bio.toLowerCase().includes(term)
+            );
+        });
+
     });
 
 
@@ -46,14 +55,11 @@ const Freelancers = () => {
             ) : (
                 <Row>
                     {filteredFreelancers.map((freelancer) => {
-                        if (isFreelancer(freelancer.data)) {
-                            return (
-                                <Col key={freelancer.id} md={4} className="mb-4">
-                                    <CardFrelancer id={freelancer.id} name={freelancer.data.name} bio={freelancer.data.bio} email={freelancer.data.email} image={freelancer.image} skills={freelancer.data.skills}/>
-                                </Col>
-                            );
-                        }
-                        return null;
+                        return (
+                            <Col key={freelancer.id} md={4} className="mb-4">
+                                <CardFrelancer id={freelancer.id} name={freelancer.name} bio={freelancer.bio} email={freelancer.email} image={freelancer.image} skills={freelancer.skills}/>
+                            </Col>
+                        );
                     })}
                 </Row>
             )}
