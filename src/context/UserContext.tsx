@@ -1,13 +1,9 @@
-import { createContext, useContext, useState } from 'react';
-import { FreelancerFormData, ClientFormData } from '../schemas/userSchema';
-import { mockFreelancers, mockClients } from '../data/mockUsers';
-
-type User = {
-    id: string;
-    type: 'freelancer' | 'client';
-    data: FreelancerFormData | ClientFormData;
-    image: string | undefined;
-};
+import {createContext, useContext, useEffect, useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import {api} from "../api/api.ts";
+import {iClient, iClientCreate, iClientWithoutPass} from "../interfaces/client.interface.ts";
+import {iFreelancer, iFreelancerCreate, iFreelancerWithoutPass} from "../interfaces/freelancer.interface.ts";
+import {iLogin} from "../interfaces/login.interface.ts";
 
 type UserContextType = {
     users: User[];
