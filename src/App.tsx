@@ -6,36 +6,33 @@ import Profile from './pages/profile/Profile.tsx';
 import CustomNavbar from "./components/navbar/Navbar.tsx";
 import ProjectDetails from "./pages/projectDetails/ProjectDetails.tsx";
 import CreateProject from "./pages/createProject/CreateProject.tsx";
-import {ThemeProvider, useTheme} from "./context/ThemeContext.tsx";
-import {LuMoon, LuSun} from "react-icons/lu";
-
-const ThemeToggleButton = () => {
-    const { theme, toggleTheme } = useTheme();
-    return (
-        <button className="btn" onClick={toggleTheme}>
-            {theme === "dark" ? <LuSun /> : <LuMoon />}
-        </button>
-    );
-};
+import { ThemeProvider } from "./context/ThemeContext.tsx";
+import Register from "./pages/register/Register.tsx";
+import { UserProvider } from "./context/UserContext.tsx";
+import { ProjectProvider } from "./context/ProjectContext.tsx";
+import Login from "./pages/login/Login.tsx";
 
 function App() {
     return (
-        <ThemeProvider>
-            <Router>
-                <CustomNavbar/>
-                <div className="container mt-3">
-                    <ThemeToggleButton />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/freelancers" element={<Freelancers />} />
-                        <Route path="/projects" element={<Projects />} />
-                        <Route path="/project/:id" element={<ProjectDetails />} />
-                        <Route path="/profile/:id" element={<Profile />} />
-                        <Route path="/create-project" element={<CreateProject />} />
-                    </Routes>
-                </div>
-            </Router>
-        </ThemeProvider>
+        <Router>
+            <UserProvider>
+                <ProjectProvider>
+                    <ThemeProvider>
+                        <CustomNavbar />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/freelancers" element={<Freelancers />} />
+                            <Route path="/projects" element={<Projects />} />
+                            <Route path="/project/:id" element={<ProjectDetails />} />
+                            <Route path="/profile/:id" element={<Profile />} />
+                            <Route path="/create-project" element={<CreateProject />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login />} />
+                        </Routes>
+                    </ThemeProvider>
+                </ProjectProvider>
+            </UserProvider>
+        </Router>
     );
 }
 
