@@ -1,22 +1,26 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { clientSchema, ClientFormData } from '../../schemas/userSchema';
+import { clientCreateSchema } from '../../schemas/client.schema.ts';
 import { useUserContext } from '../../context/UserContext';
 import { Button, Form } from 'react-bootstrap';
+import {iClientCreate} from "../../interfaces/client.interface.ts";
+import {useNavigate} from "react-router-dom";
 
 const ClientForm = () => {
+    const navigate = useNavigate();
     const { addClient } = useUserContext();
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<ClientFormData>({
-        resolver: zodResolver(clientSchema),
+    } = useForm<iClientCreate>({
+        resolver: zodResolver(clientCreateSchema),
     });
 
-    const onSubmit = (data: ClientFormData) => {
+    const onSubmit = (data: iClientCreate) => {
         addClient(data);
         alert('Client cadastrado com sucesso!');
+        navigate("/")
     };
 
     return (
@@ -31,6 +35,12 @@ const ClientForm = () => {
                 <Form.Label>E-mail</Form.Label>
                 <Form.Control type="email" {...register('email')} />
                 {errors.email && <span className="text-danger">{errors.email.message}</span>}
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Senha</Form.Label>
+                <Form.Control type="password" {...register('password')} />
+                {errors.password && <span className="text-danger">{errors.password.message}</span>}
             </Form.Group>
 
             <Form.Group className="mb-3">
