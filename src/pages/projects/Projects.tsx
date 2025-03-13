@@ -1,10 +1,21 @@
 import { useProjectContext } from '../../context/ProjectContext';
 import {Card, Container, Row, Col, Button, Form} from 'react-bootstrap';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {iProject} from "../../interfaces/project.interface.ts";
 
 const Projects = () => {
-    const { projects } = useProjectContext();
+    const { retrieveProjects } = useProjectContext();
+    const [projects, setProjects] = useState<iProject[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const getProjects = async () => {
+            const projects = await retrieveProjects();
+            setProjects(projects);
+        };
+
+        getProjects();
+    }, []);
 
     // Filtra projetos com base no termo de busca
     const filteredProjects = projects.filter((project) => {
@@ -23,9 +34,11 @@ const Projects = () => {
             <h1 className="mb-4">Projetos Publicados</h1>
 
             {/* Botão para criar novo projeto */}
-            <Button href="/create-project" variant="success" className="mb-4">
-                Publicar Novo Projeto
-            </Button>
+            {localStorage.getItem("@ROLE") == "client" && (
+                <Button href="/create-project" variant="success" className="mb-4">
+                    Publicar Novo Projeto
+                </Button>
+            )}
 
             {/* Barra de Busca */}
             <Form.Group className="mb-4">
