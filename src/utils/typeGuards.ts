@@ -1,11 +1,12 @@
-import { FreelancerFormData, ClientFormData } from '../schemas/userSchema';
+import {iFreelancer} from "../interfaces/freelancer.interface.ts";
+import {iClient} from "../interfaces/client.interface.ts";
 
 // Verifica se o objeto é um FreelancerFormData
-export function isFreelancer(data: FreelancerFormData | ClientFormData): data is FreelancerFormData {
-    return (data as FreelancerFormData).bio !== undefined;
+export function isFreelancer(data: iFreelancer | iClient): data is iFreelancer {
+    return (data as iFreelancer).bio !== undefined;
 }
 
 // Verifica se o objeto é um ClientFormData
-export function isClient(data: FreelancerFormData | ClientFormData): data is ClientFormData {
-    return (data as ClientFormData).company !== undefined;
+export function isClient(data: iFreelancer | iClient): data is iClient {
+    return (data as iClient).company !== undefined;
 }
